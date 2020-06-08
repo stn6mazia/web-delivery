@@ -1,0 +1,10 @@
+{
+    "hosting": {
+        "public": "dist/carbonite-burger",
+        "ignore": [
+            "firebase.json",
+            "**/.*",
+            "**/node_modules/**"
+        ]
+    }
+}

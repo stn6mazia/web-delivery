@@ -1,0 +1,57 @@
+import { Component, OnInit } from '@angular/core';
+import { map } from 'rxjs/operators';
+import { ordersService } from '../../services/order.service';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-order-detail-page',
+  templateUrl: './order-detail-page.component.html',
+  styleUrls: ['./order-detail-page.component.scss']
+})
+export class OrderDetailPageComponent implements OnInit {
+
+  ordersList
+  detailOrder
+  detailOrderId
+  haveOrder = false
+  detail = false
+
+
+  constructor(
+    private ordersService: ordersService,
+    private router: Router
+  ) { }
+
+  ngOnInit() {
+    this.detailOrderId = sessionStorage.getItem('orderDetailId')
+    this.getOrders()
+  }
+
+  getOrders() {
+    this.ordersService.getOrdersList().snapshotChanges().pipe(
+      map
+      (changes =>
+        changes.map(p =>
+          ({ key: p.payload.key, ...p.payload.val() })
+        )
+      )
+    ).subscribe(orders => {
+      if (orders.length > 0) {
+        for(let i = 0; i < orders.length; i++) {
+          if(orders[i].key == this.detailOrderId) {
+            this.detailOrder = orders[i]
+          }
+           
+        }
+        this.haveOrder = true
+      } else {
+        this.haveOrder = false
+      }
+    });
+  }
+
+  print() {
+    window.print()
+  }
+
+}

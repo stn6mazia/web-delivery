@@ -1,0 +1,168 @@
+<div id="full-orders-page" class="wrapper">
+    <div class="container">
+        <div class="row right pb-24">
+            <div class="col right pr-16">
+                <div class="dropdown">
+                    <span class="f-24" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bars"></i></span>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" [routerLink]="['/products']" routerLinkActive="router-link-active">Produtos</a>
+                        <a class="dropdown-item" [routerLink]="['/store-settings']">Configurações da loja</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" (click)="logout()">Sair <i class="fas fa-power-off"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <select class="select custom-select" #listTypeInput (input)="orderType = listTypeInput.value" id="">
+                    <option value="Em andamento">Em andamento</option>
+                    <option value="Concluidos">Concluidos</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+
+    <div *ngIf="orderType == 'Em andamento'">
+        <div class="container-scroll">
+            <div class="row-list">
+                <div class="order-list-card">
+                    <div class="row left pl-16 pb-16">
+                        <div class="col">
+                            <span class="f-24">Pedidos pendentes</span>
+                        </div>
+                    </div>
+                    <div class="order-scroll">
+                        <div class="row order-spec" *ngFor="let order of activeOrders">
+                            <div class="col left">
+                                {{ order.userNname }}
+                                <br> {{ order.createdDate }}
+                                <br> {{order.table}}
+                                <br>
+                                <span class="f-18">
+                                    {{order.price | currencyFormat}}
+                                </span>
+                                <br>
+                                <br>
+                                <br>
+                                <span class="under-line f-16 clickable" (click)="detailPage(order.key)">Ver
+                                    detalhes</span>
+                                <div class="btn-sect pt-16">
+                                    <button class="btn btn-default" (click)="aproveOrder(order.key)">Aprovar
+                                        pedido</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="order-list-card">
+                    <div class="row left pl-16 pb-16">
+                        <div class="col">
+                            <span class="f-24">Em preparação</span>
+                        </div>
+                    </div>
+                    <div class="order-scroll">
+                        <div class="row order-spec" *ngFor="let order of preparingOrders">
+                            <div class="col left">
+                                {{ order.userNname }}
+                                <br> {{ order.createdDate }}
+                                <br> {{order.table}}
+                                <br>
+
+                                <br *ngIf="order.updateDate"> <span *ngIf="order.updateDate" class="unfocus-text f-16">Atualizado em:</span>
+                                <br *ngIf="order.updateDate">
+                                <span class="f-18" *ngIf="order.updateDate">{{order.updateDate}}</span>
+                                <span class="f-18">
+                                    {{order.price | currencyFormat}}
+                                </span>
+                                <br>
+                                <br>
+                                <br>
+                                <span class="under-line f-16 clickable" (click)="detailPage(order.key)">Ver
+                                    detalhes</span>
+                                <div class="btn-sect pt-16">
+                                    <button class="btn btn-default" (click)="doneOrder(order.key, order.userNname, order.userPhone)">Pedido
+                                        pronto</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="order-list-card">
+                    <div class="row left pl-16 pb-16">
+                        <div class="col">
+                            <span class="f-24">Pedidos prontos</span>
+                        </div>
+                    </div>
+                    <div class="order-scroll">
+                        <div class="row order-spec" *ngFor="let order of doneOrders">
+                            <div class="col left">
+                                {{ order.userNname }}
+                                <br> {{ order.createdDate }}
+                                <br> {{order.table}}
+                                <br>
+                                <br *ngIf="order.updateDate"> <span *ngIf="order.updateDate" class="unfocus-text f-16">Atualizado em:</span>
+                                <br *ngIf="order.updateDate">
+                                <span class="f-18" *ngIf="order.updateDate">{{order.updateDate}}</span>
+                                <span class="f-18">
+                                    {{order.price | currencyFormat}}
+                                </span>
+                                <br>
+                                <br>
+                                <br>
+                                <span class="under-line f-16 clickable" (click)="detailPage(order.key)">Ver
+                                    detalhes</span>
+                                <div class="btn-sect pt-16">
+                                    <button class="btn btn-default" (click)="payedOrder(order.key)">Pedido pago
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="orderType == 'Concluidos'">
+        <div class="container">
+            <div class="row-list">
+                <div class="col order-card">
+                    <div class="row left pl-16 pb-16">
+                        <div class="col">
+                            <span class="f-24">Pedidos pagos</span>
+                        </div>
+                    </div>
+                    <div class="row order-spec" *ngFor="let order of payedOrders">
+                        <div class="col left">
+                            {{ order.userNname }}
+                            <br> {{ order.createdDate }}
+                            <br> {{order.table}}
+                            <br>
+                            <br *ngIf="order.updateDate"> <span *ngIf="order.updateDate" class="unfocus-text f-16">Atualizado em:</span>
+                            <br *ngIf="order.updateDate">
+                            <span class="f-18" *ngIf="order.updateDate">{{order.updateDate}}</span>
+                            <span class="f-18">
+                                {{order.price | currencyFormat}}
+                            </span>
+                            <br>
+                            <br>
+                            <br>
+                            <span class="under-line f-16 clickable" (click)="detailPage(order.key)">Ver detalhes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+</div>
