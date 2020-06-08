@@ -24,7 +24,11 @@
 
 .disabled-districts-list {
     padding: 24px 16px;
-    border: solid 3px red !important;
     background-color: $default-dark-gray;
+    border: solid 3px red !important;
     margin: 16px 0;
+}
+
+.unactive-store {
+    border: solid 3px red !important;
 }

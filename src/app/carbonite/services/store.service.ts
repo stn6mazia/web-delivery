@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
-import { Store } from '../shared/Store';
+import { Store } from '../shared/store';
 
 
 @Injectable({

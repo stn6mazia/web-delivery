@@ -70,7 +70,7 @@
                             <div class="col left">
                                 {{ order.userNname }}
                                 <br> {{ order.createdDate }}
-                                <br> {{order.table}}
+                                <br> {{order.userAddress.address}}, {{order.userAddress.number}} - {{order.userAddress.neightborhood}}
                                 <br>
 
                                 <br *ngIf="order.updateDate"> <span *ngIf="order.updateDate" class="unfocus-text f-16">Atualizado em:</span>

@@ -4,6 +4,10 @@ import { UsersService } from '../../services/users.service';
 import { map } from 'rxjs/operators';
 import { Address } from '../../shared/address';
 import { AddressService } from '../../services/address.service';
+import { StoreService } from '../../services/store.service';
+import { Order } from '../../shared/order';
+import * as moment from 'moment';
+import { ordersService } from '../../services/order.service';
 
 @Component({
   selector: 'app-cart-page',
@@ -13,6 +17,7 @@ import { AddressService } from '../../services/address.service';
 export class CartPageComponent implements OnInit {
   addAddressForm
 
+  order: Order = new Order();
   cartItems
   address: Address = new Address();
 
@@ -24,16 +29,26 @@ export class CartPageComponent implements OnInit {
   showCOmplements = false
   showCOmplementsId
 
+  returnedDistricts
+  storeInfo
+  haveStoreInfo
+
+  returnedDistrictInformation
+  unlockByAddress
+
   constructor(
     private router: Router,
     private userService: UsersService,
-    private addressService: AddressService
+    private addressService: AddressService,
+    private storeService: StoreService,
+    private orderService: ordersService
   ) { }
 
   ngOnInit() {
     this.cartItems = JSON.parse(sessionStorage.getItem('cartItems'))
     this.getSubTotal()
     this.getUserAddresses()
+    this.getStoreInfo()
   }
 
   getUserAddresses() {
@@ -53,7 +68,30 @@ export class CartPageComponent implements OnInit {
           }
         }
       }
+      this.checkUserDistrict()
 
+    });
+  }
+
+  getStoreInfo() {
+    this.storeService.getStoresList().snapshotChanges().pipe(
+      map(changes =>
+        changes.map(p =>
+          ({ key: p.payload.key, ...p.payload.val() })
+        )
+      )
+    ).subscribe(store => {
+      if (store.length > 0) {
+        for (let i = 0; i < store[0].localRanges.length; i++) {
+          store[0].localRanges[i].id = i
+        }
+        this.returnedDistricts = store[0].localRanges
+        delete store[0].localRanges
+        this.storeInfo = store[0]
+        this.haveStoreInfo = true
+      } else {
+        this.haveStoreInfo = false
+      }
     });
   }
 
@@ -131,6 +169,7 @@ export class CartPageComponent implements OnInit {
           this.address.neightborhood = res.bairro
           this.address.city = res.localidade
           this.address.state = res.uf
+          this.checkUserDistrict()
         }
       )
     }
@@ -146,6 +185,41 @@ export class CartPageComponent implements OnInit {
     )
       .catch(err => console.log(err));
     this.addAddressForm = false
+  }
+
+  checkUserDistrict() {
+    setTimeout(() => {
+      if (this.addAddressForm) {
+        for (let i = 0; i < this.returnedDistricts.length; i++) {
+          if (this.address.neightborhood.toUpperCase() == this.returnedDistricts[i].name.toUpperCase()) {
+            this.unlockByAddress = this.returnedDistricts[i].status
+            this.deliveryPrice = this.returnedDistricts[i].value
+            this.returnedDistrictInformation = this.returnedDistricts[i]
+          }
+        }
+      } else {
+        for (let i = 0; i < this.returnedDistricts.length; i++) {
+          if (this.userAddresses.neightborhood.toUpperCase() == this.returnedDistricts[i].name.toUpperCase()) {
+            this.unlockByAddress = this.returnedDistricts[i].status
+            this.deliveryPrice = this.returnedDistricts[i].value
+            this.returnedDistrictInformation = this.returnedDistricts[i]
+          }
+        }
+      }
+    }, 200)
+
+  }
+
+  checkout() {
+    this.order.createdDate = moment().format('DD-MM-YYYY')
+    this.order.items = this.cartItems
+    this.order.price = this.subTotal + this.deliveryPrice
+    this.order.userAddress = this.userAddresses
+    this.order.updateDate = moment().format('DD-MM-YYYY')
+    this.orderService.createOrder(this.order)
+
+    this.router.navigateByUrl('order/novo-predido')
+    sessionStorage.removeItem('cartItems')
   }
 
 

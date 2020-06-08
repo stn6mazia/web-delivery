@@ -122,15 +122,20 @@
                 <div class="row pt-16">
                     <div class="col">
                         <label for="" class="default-label">Bairro</label>
-                        <input type="text" class="text" [(ngModel)]="address.neightborhood">
+                        <input type="text" class="text" (input)="checkUserDistrict()" [(ngModel)]="address.neightborhood">
                     </div>
                 </div>
-                <div class="row pt-24">
-                    <div class="col" *ngIf="userAddresses">
-                        <span class="under-line">Cancelar</span>
+                <div class="row" *ngIf="unlockByAddress == false">
+                    <div class="col">
+                        <span class="red f-16">Infelizmente não entregamos nesse endereço :(</span>
+                    </div>
+                </div>
+                <div class="row align-items-center pt-24">
+                    <div class="col-5 center" *ngIf="userAddresses">
+                        <span class="under-line" (click)="addAddressForm = !addAddressForm">Cancelar</span>
                     </div>
                     <div class="col">
-                        <button class="btn btn-default" (click)="saveAddress()">SALVAR</button>
+                        <button [disabled]="unlockByAddress == false" class="btn btn-default" (click)="saveAddress()">SALVAR ENDEREÇO</button>
                     </div>
                 </div>
             </div>
@@ -170,8 +175,20 @@
                 </div>
             </div>
         </div>
+        <div class="row pt-24" *ngIf="returnedDistrictInformation && !addAddressForm">
+            <div class="col">
+                <span class="f-18">Tempo para entrega: </span>
+                <span class="f-18">{{returnedDistrictInformation.timeToDelivery}} minutos</span>
+            </div>
+        </div>
+        <div class="row pt-16x" *ngIf="returnedDistrictInformation && !addAddressForm">
+            <div class="col">
+                <span class="f-18">Valor da entrega: </span>
+                <span class="f-18">{{returnedDistrictInformation.value | currencyFormat}}</span>
+            </div>
+        </div>
     </div>
-    <div class="bottom-button" [ngClass]="{'disabled-bottom': subTotal == 0}">
+    <div class="bottom-button" (click)="checkout()" [ngClass]="{'disabled-bottom': subTotal == 0}">
         <div class="row">
             <div class="col center">
                 <span>FAZER PEDIDO</span>
