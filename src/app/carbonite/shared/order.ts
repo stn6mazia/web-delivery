@@ -9,5 +9,8 @@ export class Order {
     status: number = 1;
     payment: boolean = false;
     updateDate: string;
-    price: string
+    price: number;
+    subTotal: number;
+    deliveryPrice: number;
+    timeToDelivery: string;
 }

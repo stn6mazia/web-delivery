@@ -211,12 +211,17 @@ export class CartPageComponent implements OnInit {
   }
 
   checkout() {
+    console.log(this.returnedDistrictInformation)
     this.order.createdDate = moment().format('DD-MM-YYYY')
     this.order.items = this.cartItems
     this.order.price = this.subTotal + this.deliveryPrice
+    this.order.subTotal = this.subTotal
+    this.order.deliveryPrice = this.deliveryPrice
     this.order.userAddress = this.userAddresses
     this.order.updateDate = moment().format('DD-MM-YYYY')
-    this.orderService.createOrder(this.order)
+    this.order.timeToDelivery = this.returnedDistrictInformation.timeToDelivery
+    this.orderService.createOrder(this.order);
+    
 
     this.router.navigateByUrl('order/novo-predido')
     sessionStorage.removeItem('cartItems')
