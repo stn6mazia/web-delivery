@@ -1,6 +1,6 @@
 @import '../../shared/styles/mixxins';
 #full-orders-page {
-    background-color: $default-gray;
+    background-color: $default-dark-gray;
     color: $default-white;
     overflow: hidden;
 }
@@ -75,4 +75,49 @@
     padding: 24px 16px 24px 16px;
     border: solid 1px $default-black;
     margin: 16px;
+}
+
+.cards-row {
+    overflow: auto;
+    display: -webkit-box;
+    max-width: 100%;
+}
+
+.cards-row::-webkit-scrollbar {
+    width: 0px;
+    height: 1px;
+    background-color: #F5F5F5;
+}
+
+.cards-row::-webkit-scrollbar-thumb {
+    background-color: #000000;
+}
+
+.cards-row::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #F8F8F8;
+}
+
+.card-col {
+    width: 35rem;
+    min-height: 4rem;
+    margin: 24px;
+    color: black;
+    background-color: $default-white;
+}
+
+.pl-40 {
+    padding-left: 40px;
+}
+
+.done-box {
+    background-color: $default-white;
+    padding: 24px 16px;
+    color: black;
+}
+
+.done-orders-list {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-top: 1px solid $default-light-gray;
 }

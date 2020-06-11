@@ -16,6 +16,8 @@ export class OrderDetailPageComponent implements OnInit {
   haveOrder = false
   detail = false
 
+  admin
+
 
   constructor(
     private ordersService: ordersService,
@@ -23,8 +25,18 @@ export class OrderDetailPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.mountUser()
     this.detailOrderId = sessionStorage.getItem('orderDetailId')
     this.getOrders()
+  }
+
+  mountUser() {
+
+    if (sessionStorage.getItem('admin')) {
+      this.admin = true
+    } else {
+      this.admin = false
+    }
   }
 
   getOrders() {

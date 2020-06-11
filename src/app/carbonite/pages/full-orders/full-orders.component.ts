@@ -16,6 +16,8 @@ export class FullOrdersComponent implements OnInit {
 
   ordersList
   detailOrder
+  
+  ShowDoneOrders = false
 
   activeOrders: any[] = []
   preparingOrders: any[] = []
