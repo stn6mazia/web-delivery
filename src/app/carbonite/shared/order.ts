@@ -2,7 +2,7 @@ export class Order {
     items: Array<any>
     userKey: string = sessionStorage.getItem('userKey');
     userNname: string = sessionStorage.getItem('userName');
-    userPhone: string = sessionStorage.getItem('phone');
+    userPhone: string;
     userEmail: string = sessionStorage.getItem('userEmail')
     userAddress: any;
     createdDate: string;
@@ -13,4 +13,5 @@ export class Order {
     subTotal: number;
     deliveryPrice: number;
     timeToDelivery: string;
+    paymentType: number;
 }

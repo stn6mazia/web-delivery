@@ -138,6 +138,17 @@ export class StoreSettingsPageComponent implements OnInit {
     )
       .catch(err => console.log(err));
   }
+  updateMpPaymentStatus() {
+    this.storeInfo.mpPayment = !this.storeInfo.mpPayment
+    let key = this.storeInfo.key
+    this.storeService.updateStore(
+      key,
+      {
+        mpPayment: this.storeInfo.mpPayment,
+      }
+    )
+      .catch(err => console.log(err));
+  }
 
   updateDistrict(evt) {
     evt.value = parseInt(evt.value)

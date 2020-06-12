@@ -187,13 +187,45 @@
                 <span class="f-18">{{returnedDistrictInformation.value | currencyFormat}}</span>
             </div>
         </div>
-    </div>
-    <div class="bottom-button" (click)="checkout()" [ngClass]="{'disabled-bottom': subTotal == 0}">
+        <div class="row pt-24 pb-24">
+            <div class="col">
+                <span class="f-24">Forma de pagamento </span>
+                <br>
+                <select name="" id="" class="text" #paymentSelect (input)="selectedPayment = paymentSelect.value">
+                    <option *ngIf="storeInfo.offlinePayment" value="1">Pagar na entrega</option>
+                    <option *ngIf="storeInfo.mpPayment" value="2">Mercado pago</option>
+                </select>
+            </div>
+        </div>
         <div class="row">
+            <div class="col">
+                <span class="16" *ngIf="selectedPayment == 2">Após o recebimento do seu pedido nós enviaremos o link para o pagamento no seu whatsapp</span>
+            </div>
+        </div>
+        <div class="row pt-24 pb-24" *ngIf="!anotherPhone && selectedPayment == 2">
             <div class="col center">
+                <span class="clickable under-line f-16" (click)="anotherPhone = true; order.userPhone = ''">Inserir outro telefone</span>
+            </div>
+        </div>
+        <div class="row pt-24 pb-24" *ngIf="anotherPhone && selectedPayment == 2">
+            <div class="col">
+                <span class="f-18">Insira um número com whatsapp</span>
+                <br>
+                <input type="text" [(ngModel)]="anotherPhoneNumber" mask="(00) 0 0000 0000" class="text">
+            </div>
+        </div>
+        <div class="row pt-16 pb-24" *ngIf="anotherPhone && selectedPayment == 2">
+            <div class=" col ">
+                <span class="f-16 under-line " (click)="anotherPhone= false; anotherPhoneNumber= '' ">Cancelar</span>
+            </div>
+        </div>
+    </div>
+    <div class="bottom-button " (click)="checkout() " [ngClass]="{ 'disabled-bottom': subTotal==0 } ">
+        <div class="row ">
+            <div class="col center ">
                 <span>FAZER PEDIDO</span>
             </div>
-            <div class="col-5 center">
+            <div class="col-5 center ">
                 {{deliveryPrice + subTotal | currencyFormat}}
             </div>
         </div>

@@ -25,6 +25,7 @@ export class ProductsPageComponent implements OnInit {
   toppingsList
   categoryList
 
+  haveUser
   ProductList = true
 
   selectedCategoryList
@@ -47,6 +48,11 @@ export class ProductsPageComponent implements OnInit {
     this.getAllProducts()
     this.getAllToppings()
     this.checkCartQuantity()
+    if(sessionStorage.getItem('userKey')) {
+      this.haveUser = true
+    } else {
+      this.haveUser = false
+    }
   }
 
   mountUser() {

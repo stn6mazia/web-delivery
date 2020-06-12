@@ -1,4 +1,13 @@
 <div id="login" class="wrapper">
+    <div class="container">
+        <div class="row pb-24">
+            <div class="col right">
+                <span class="f-24" [routerLink]="['/']" routerLinkActive="router-link-active">
+                    <i class="fas fa-times"></i>
+                </span>
+            </div>
+        </div>
+    </div>
     <div class="container full-height">
         <div class="row full-height justify-content-center align-items-center center">
             <div class="col" *ngIf="pageStep == 1">
@@ -14,7 +23,7 @@
                 </div>
                 <div class="row pt-24">
                     <div class="col">
-                        <span class="f-24">Faça Login ou se cadastre</span>
+                        <span class="f-24">Faça Login ou se cadastre <span class="f-24" *ngIf="needLoginToCheckout">para concluir seu pedido</span>.</span>
                     </div>
                 </div>
                 <form [formGroup]="login">

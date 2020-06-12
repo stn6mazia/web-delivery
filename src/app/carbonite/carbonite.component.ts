@@ -36,7 +36,7 @@ export class CarboniteComponent implements OnInit {
       }
     } else {
       this.userId = false
-      this.router.navigateByUrl('login')
+      this.router.navigateByUrl('products')
     }
   }
 

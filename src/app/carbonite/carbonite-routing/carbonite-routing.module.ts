@@ -49,7 +49,13 @@ export const routes: Routes = [
   },
   {
     path: '',
-    component: CarboniteComponent
+    redirectTo: 'products',
+    pathMatch: 'full'
+  },
+  {
+    path: '**',
+    redirectTo: 'products',
+    pathMatch: 'full'
   }
 ]
 

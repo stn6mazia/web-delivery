@@ -48,6 +48,29 @@
                             </div>
                             <div class="row pt-16">
                                 <div class="col">
+                                    <span class="f-18 f-bold">Metodo de pagamento</span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <span class="f-16" *ngIf="order.paymentType == 1">Pagamento na entrega</span>
+                                    <span class="f-16" *ngIf="order.paymentType == 2">Mercado pago</span>
+                                </div>
+                            </div>
+                            <div class="row pt-16" *ngIf="order.paymentType == 2">
+                                <div class="col">
+                                    <span class="f-18 f-bold">Link Mercado Pago</span>
+                                    <br>
+                                    <input type="text" class="text" [(ngModel)]="whatsappLink">
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="order.paymentType == 2">
+                                <div class="col">
+                                    <button class="btn btn-default" (click)="sendWhatssappMsg(order)">ENVIAR LINK</button>
+                                </div>
+                            </div>
+                            <div class="row pt-16">
+                                <div class="col">
                                     <span class="f-18 f-bold">Endereço de entrega</span>
                                 </div>
                             </div>
@@ -65,14 +88,14 @@
                             </div>
                             <div class="row f-24">
                                 <div class="col center">
-                                    <span class="under-line f-16 clickable" (click)="detailPage(order.key)">Ver
+                                    <span class="under-line f-16 clickable" (click)="detailPage(order)">Ver
                                         detalhes</span>
                                 </div>
                             </div>
                             <div class="row pt-24">
                                 <div class="col">
                                     <div class="btn-sect pt-16">
-                                        <button class="btn btn-default" (click)="aproveOrder(order.key)">Aprovar
+                                        <button class="btn btn-default" (click)="aproveOrder(order.key); orderPayedMsg(order)">Aprovar
                                             pedido</button>
                                     </div>
                                 </div>
@@ -159,12 +182,12 @@
                             </div>
                             <div class="row f-24">
                                 <div class="col center">
-                                    <span class="under-line f-16 clickable" (click)="detailPage(order.key)">Ver
+                                    <span class="under-line f-16 clickable" (click)="detailPage(order)">Ver
                                         detalhes</span>
                                 </div>
                             </div>
                             <div class="btn-sect pt-16">
-                                <button class="btn btn-default" (click)="doneOrder(order.key, order.userNname, order.userPhone)">Pedido
+                                <button class="btn btn-default" (click)="doneOrder(order.key, order.userNname, order.userPhone); orderDoneMsg(order)">Pedido
                                     pronto</button>
                             </div>
                         </div>
@@ -224,7 +247,7 @@
                             </div>
                             <div class="row f-24">
                                 <div class="col center">
-                                    <span class="under-line f-16 clickable" (click)="detailPage(order.key)">Ver
+                                    <span class="under-line f-16 clickable" (click)="detailPage(order)">Ver
                                         detalhes</span>
                                 </div>
                             </div>
@@ -246,18 +269,6 @@
                         <div class="col-8">
                             <span class="f-24">Pedidos concluídos</span>
                         </div>
-                        <!-- <div class="col">
-                            <div class="row align-items-end">
-                                <div class="col-8">
-                                    <label class="label-default">Busca por data</label>
-                                    <br>
-                                    <input type="text" class="text">
-                                </div>
-                                <div class="col">
-                                    <button class="btn btn-default"><i class="fas fa-search"></i></button>
-                                </div>
-                            </div>
-                        </div> -->
                     </div>
                     <div class="row pt-32">
                         <div class="col-1">
@@ -302,7 +313,7 @@
                             <span class="f-18">{{item.price | currencyFormat}}</span>
                         </div>
                         <div class="col-1">
-                            <span class="f-18 under-line clickable" (click)="detailPage(item.key)">Detalhes</span>
+                            <span class="f-18 under-line clickable" (click)="detailPage(item)">Detalhes</span>
                         </div>
                     </div>
                 </div>

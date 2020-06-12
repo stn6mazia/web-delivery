@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { UsersService } from '../../services/users.service';
 import { map } from 'rxjs/operators';
@@ -8,7 +8,9 @@ import { StoreService } from '../../services/store.service';
 import { Order } from '../../shared/order';
 import * as moment from 'moment';
 import { ordersService } from '../../services/order.service';
+// import  {mercadopago} from 'node_modules/mercadopago';
 
+@Injectable()
 @Component({
   selector: 'app-cart-page',
   templateUrl: './cart-page.component.html',
@@ -21,8 +23,12 @@ export class CartPageComponent implements OnInit {
   cartItems
   address: Address = new Address();
 
+  anotherPhone
   subTotal
+  selectedPayment = 1
   deliveryPrice = 0
+
+  anotherPhoneNumber
 
   userAddresses
 
@@ -41,14 +47,23 @@ export class CartPageComponent implements OnInit {
     private userService: UsersService,
     private addressService: AddressService,
     private storeService: StoreService,
-    private orderService: ordersService
-  ) { }
+    private orderService: ordersService,
+  ) {
+    // mercadoPago.configure({
+    //   access_token: 'TEST-1490751100774668-061200-446d0660952b6bd396d0598de2f0e306-455524849'
+    // });
+  }
 
   ngOnInit() {
-    this.cartItems = JSON.parse(sessionStorage.getItem('cartItems'))
-    this.getSubTotal()
-    this.getUserAddresses()
-    this.getStoreInfo()
+    if (sessionStorage.getItem('userKey')) {
+      this.cartItems = JSON.parse(sessionStorage.getItem('cartItems'))
+      this.getSubTotal()
+      this.getUserAddresses()
+      this.getStoreInfo()
+    } else {
+      sessionStorage.setItem('loginToCheckout', 'true')
+      this.router.navigateByUrl('login')
+    }
   }
 
   getUserAddresses() {
@@ -211,7 +226,6 @@ export class CartPageComponent implements OnInit {
   }
 
   checkout() {
-    console.log(this.returnedDistrictInformation)
     this.order.createdDate = moment().format('DD-MM-YYYY')
     this.order.items = this.cartItems
     this.order.price = this.subTotal + this.deliveryPrice
@@ -220,10 +234,18 @@ export class CartPageComponent implements OnInit {
     this.order.userAddress = this.userAddresses
     this.order.updateDate = moment().format('DD-MM-YYYY')
     this.order.timeToDelivery = this.returnedDistrictInformation.timeToDelivery
-    this.orderService.createOrder(this.order);
-    
+    this.order.paymentType = this.selectedPayment
 
-    this.router.navigateByUrl('order/novo-predido')
+    if(this.anotherPhoneNumber) {
+      this.order.userPhone = this.anotherPhoneNumber
+    } else {
+      this.order.userPhone = sessionStorage.getItem('phone')
+    }
+
+    this.orderService.createOrder(this.order);
+
+
+    this.router.navigateByUrl('full-orders')
     sessionStorage.removeItem('cartItems')
   }
 

@@ -1,12 +1,16 @@
 <div id="products-page" [ngClass]="{'admin-prod-page': admin}" class="wrapper">
     <div class="container">
-        <div class="row right pb-24">
-            <div class="col right pr-16">
+        <div class="row pb-24">
+            <div class="col right" *ngIf="!haveUser">
+                <span class="f-24" [routerLink]="['/login']" routerLinkActive="router-link-active">
+                    <i class="fas fa-user "></i>
+                </span>
+            </div>
+            <div class="col right pr-16" *ngIf="haveUser">
                 <div class="dropdown" *ngIf="!admin">
                     <span class="f-24" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-bars"></i></span>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <a class="dropdown-item" *ngIf="!admin" (click)="goToOrders()">Meus pedidos</a>
-                        <a class="dropdown-item" *ngIf="admin" (click)="goToFullOrders()">Pedidos</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" (click)="logout()">Sair <i class="fas fa-power-off"></i></a>
                     </div>
@@ -64,16 +68,6 @@
         </div>
         <div class="row full-height justify-content-center center" *ngIf="!admin">
             <div class="col">
-                <div class="row">
-                    <div class="col">
-                        <span class="f-32">Olá {{userName}}</span>
-                    </div>
-                </div>
-                <div class="row pt-16">
-                    <div class="col">
-                        <span class="f-16">Que tal pedir um lanche?</span>
-                    </div>
-                </div>
                 <produc-card [products]="productsList"></produc-card>
             </div>
         </div>

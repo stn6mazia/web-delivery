@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ordersService } from 'src/app/carbonite/services/order.service';
 import { map } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-orders-page',
@@ -16,7 +17,8 @@ export class UserOrdersPageComponent implements OnInit {
   detail = false
 
   constructor(
-    private ordersService: ordersService
+    private ordersService: ordersService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -45,7 +47,9 @@ export class UserOrdersPageComponent implements OnInit {
     for(let i = 0; i < this.ordersList.length; i++) {
       if(this.ordersList[i].key === key) {
         this.detailOrder = this.ordersList[i]
-        this.detail = true
+        sessionStorage.setItem('orderDetailId', JSON.stringify(this.ordersList[i]))
+        this.router.navigateByUrl(`order/${this.ordersList[i].key}`)
+        
       }
     }
 

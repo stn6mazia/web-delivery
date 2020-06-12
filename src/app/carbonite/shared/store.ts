@@ -18,4 +18,5 @@ export class Store {
     closeHour: string;
     saturday: boolean;
     sunday: boolean;
+    mpPayment: boolean;
 }

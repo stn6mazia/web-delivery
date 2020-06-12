@@ -26,7 +26,7 @@ export class OrderDetailPageComponent implements OnInit {
 
   ngOnInit() {
     this.mountUser()
-    this.detailOrderId = sessionStorage.getItem('orderDetailId')
+    this.detailOrderId = JSON.parse(sessionStorage.getItem('orderDetailId'))
     this.getOrders()
   }
 
@@ -50,7 +50,7 @@ export class OrderDetailPageComponent implements OnInit {
     ).subscribe(orders => {
       if (orders.length > 0) {
         for(let i = 0; i < orders.length; i++) {
-          if(orders[i].key == this.detailOrderId) {
+          if(orders[i].key == this.detailOrderId.key) {
             this.detailOrder = orders[i]
           }
            

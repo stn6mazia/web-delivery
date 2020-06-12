@@ -18,6 +18,8 @@ export class LoginPageComponent implements OnInit {
   register: FormGroup
   users: any;
   user: User = new User()
+
+  needLoginToCheckout
   
   submitted = true
 
@@ -30,6 +32,11 @@ export class LoginPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    if(sessionStorage.getItem('loginToCheckout')) {
+      this.needLoginToCheckout = true
+    } else {
+      this.needLoginToCheckout = false
+    }
     this.mountLoginForm()
     this.mountRegisterForm()
   }
@@ -109,8 +116,13 @@ export class LoginPageComponent implements OnInit {
             sessionStorage.setItem('admin', 'true')
             this.router.navigateByUrl('full-orders')
           } else {
+            if(sessionStorage.getItem('loginToCheckout')) {
+              sessionStorage.removeItem('loginToCheckout')
+              this.router.navigateByUrl('cart')
+            } else {
+              this.router.navigateByUrl('products')
+            }
 
-            this.router.navigateByUrl('products')
           }
 
         }
